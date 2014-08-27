@@ -75,8 +75,16 @@ bool HelloWorld::init()
     auto particle = ParticleSystemQuad::create();
     particle = ParticleFire::create();
     particle->setPosition(Vec2(visibleSize.width/2 + origin.x, visibleSize.height/2 + origin.y));
-    this->addChild(particle, 1);
-    
+    this->addChild(particle, 1, 1);
+
+    auto listener = EventListenerTouchOneByOne::create();
+    listener->onTouchBegan = CC_CALLBACK_2(HelloWorld::onTouchBegan, this);
+    listener->onTouchMoved = CC_CALLBACK_2(HelloWorld::onTouchMoved, this);
+    listener->onTouchEnded = CC_CALLBACK_2(HelloWorld::onTouchEnded, this);
+
+    auto dispatcher = Director::getInstance()->getEventDispatcher();
+    dispatcher->addEventListenerWithSceneGraphPriority(listener, this);
+
     return true;
 }
 
@@ -93,4 +101,40 @@ void HelloWorld::menuCloseCallback(Ref* pSender)
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
     exit(0);
 #endif
+}
+
+bool HelloWorld::onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event)
+{
+    auto location = touch->getLocation();
+    auto sprite = this->getChildByTag(1);
+
+    sprite->setPosition(location);
+
+    return true;
+}
+
+void HelloWorld::onTouchMoved(cocos2d::Touch* touch, cocos2d::Event* event)
+{
+    auto location = touch->getLocation();
+    auto sprite = this->getChildByTag(1);
+
+    sprite->setPosition(location);
+}
+
+void HelloWorld::onTouchEnded(cocos2d::Touch *touch, cocos2d::Event *event)
+{
+/*
+    auto visibleSize = Director::getInstance()->getVisibleSize();
+    auto point = Point(visibleSize.width/2, visibleSize.height/2);
+    auto move = MoveTo::create(2.0f, point);
+
+    auto sprite = this->getChildByTag(1);
+
+    auto removeSprite = CallFunc::create([this, sprite](){
+        this->removeChild(sprite);
+    });
+
+    auto sequence = Sequence::create(move, removeSprite, NULL);
+    sprite->runAction(sequence);
+*/
 }
