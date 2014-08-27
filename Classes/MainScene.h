@@ -10,5 +10,19 @@
 #define __ChatNoir__MainScene__
 
 #include <iostream>
+#include "cocos2d.h"
+
+class MainScene : public cocos2d::Layer
+{
+public:
+    static cocos2d::Scene* createScene();
+
+    virtual bool init();
+
+    void menuCloseCallback(cocos2d::Ref* pSender);
+
+    CREATE_FUNC(MainScene);
+};
+
 
 #endif /* defined(__ChatNoir__MainScene__) */
